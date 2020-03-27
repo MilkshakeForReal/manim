@@ -145,7 +145,7 @@ def main(config):
             "skip_animations",
             "start_at_animation_number",
             "end_at_animation_number",
-            "leave_progress_bars",
+            "remove_progress_bars",
         ]
     ])
 

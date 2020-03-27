@@ -28,7 +28,7 @@ class Scene(Container):
         "random_seed": 0,
         "start_at_animation_number": None,
         "end_at_animation_number": None,
-        "leave_progress_bars": False,
+        "remove_progress_bars": False,
     }
 
     def __init__(self, **kwargs):
@@ -304,7 +304,7 @@ class Scene(Container):
             times = np.arange(0, run_time, step)
         time_progression = ProgressDisplay(
             times, total=n_iterations,
-            leave=self.leave_progress_bars,
+            leave=self.remove_progress_bars,
             ascii=False if platform.system() != 'Windows' else True
         )
         return time_progression

@@ -13,7 +13,14 @@ from manimlib.imports import *
 # Use -n <number> to skip ahead to the n'th animation of a scene.
 # Use -r <number> to specify a resolution (for example, -r 1080
 # for a 1920x1080 video)
-
+class ConfigExmaple(Scene):
+    CONFIG={
+        "camera_config":{"background_color": RED}
+    }
+    def construct(self):
+        text = TextMobject("text")
+        self.play(Write(text))
+        self.wait()
 
 class OpeningManimExample(Scene):
     def construct(self):
@@ -134,3 +141,81 @@ class UpdatersExample(Scene):
         self.wait()
 
 # See old_projects folder for many, many more
+class RiemannRectangles(GraphScene):
+    CONFIG = {
+        "y_max": 8,
+        "y_axis_height": 5,
+    }
+    def construct(self):
+        self.setup_axes()
+        def func(x):
+            return 0.1 * (x + 3-5) * (x - 3-5) * (x-5) + 5
+
+        graph=self.get_graph(func,x_min=0.3,x_max=9.2)
+        riemann_rectangles=self.get_riemann_rectangles(
+                                    graph,
+                                    x_min=2,
+                                    x_max=8,
+                                    dx=0.5
+                                    )
+        self.add(graph,riemann_rectangles)
+
+class Ball(SpecialThreeDScene):
+    def construct(self):
+        self.set_camera_to_default_position()
+        axes = ThreeDAxes()
+        self.add(axes)
+        self.wait(0.2)
+        sphere1 = Sphere(radius=2, checkerboard_colors=None, fill_opacity=0.3)
+        self.play(*[FadeInFrom(sphere1[i],
+                               sphere1[i].get_center()[0] * 2 * RIGHT + sphere1[i].get_center()[2] * 2 * OUT +
+                               sphere1[i].get_center()[1] * 2 * UP, run_time=np.random.random() * 2)
+                    for i in range(len(sphere1))])
+        self.wait()
+
+class RiemannRectanglesAnimation(GraphScene):
+    CONFIG = {
+        "y_max": 8,
+        "y_axis_height": 5,
+        "init_dx":0.5,
+    }
+    def construct(self):
+        self.setup_axes()
+        def func(x):
+            return 0.1 * (x + 3-5) * (x - 3-5) * (x-5) + 5
+
+        graph=self.get_graph(func,x_min=0.3,x_max=9.2)
+        kwargs = {
+            "x_min" : 2,
+            "x_max" : 8,
+            "fill_opacity" : 0.75,
+            "stroke_width" : 0.25,
+        }
+        flat_rectangles = self.get_riemann_rectangles(
+                                self.get_graph(lambda x : 0),
+                                dx=self.init_dx,
+                                start_color=invert_color(PURPLE),
+                                end_color=invert_color(ORANGE),
+                                **kwargs
+        )
+        riemann_rectangles_list = self.get_riemann_rectangles_list(
+                                graph,
+                                6,
+                                max_dx=self.init_dx,
+                                power_base=2,
+                                start_color=PURPLE,
+                                end_color=ORANGE,
+                                 **kwargs
+        )
+        self.add(graph)
+        # Show Riemann rectangles
+        self.play(ReplacementTransform(flat_rectangles,riemann_rectangles_list[0]))
+        self.wait()
+        for r in range(1,len(riemann_rectangles_list)):
+            self.transform_between_riemann_rects(
+                    riemann_rectangles_list[r-1],
+                    riemann_rectangles_list[r],
+                    replace_mobject_with_target_in_scene = True,
+                )
+        self.wait()
+

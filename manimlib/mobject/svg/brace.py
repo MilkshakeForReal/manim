@@ -1,5 +1,5 @@
 import numpy as np
-
+import copy
 from manimlib.animation.composition import AnimationGroup
 from manimlib.constants import *
 from manimlib.animation.fading import FadeIn
@@ -79,7 +79,7 @@ class Brace(TexMobject):
 class BraceLabel(VMobject):
     CONFIG = {
         "label_constructor": TexMobject,
-        "label_scale": 1,
+        "label_scale": 0.8,
     }
 
     def __init__(self, obj, text, brace_direction=DOWN, **kwargs):

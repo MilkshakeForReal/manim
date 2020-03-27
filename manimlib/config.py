@@ -108,9 +108,9 @@ def parse_cli():
             help="Play a success/failure sound",
         )
         parser.add_argument(
-            "--leave_progress_bars",
-            action="store_true",
-            help="Leave progress bars displayed in terminal",
+            "--remove_progress_bars",
+            action="store_false",
+            help="Remove progress bars displayed in terminal",
         )
         parser.add_argument(
             "--media_dir",
@@ -209,7 +209,7 @@ def get_configuration(args):
         "start_at_animation_number": args.start_at_animation_number,
         "end_at_animation_number": None,
         "sound": args.sound,
-        "leave_progress_bars": args.leave_progress_bars,
+        "remove_progress_bars": args.remove_progress_bars,
         "media_dir": args.media_dir,
         "video_dir": args.video_dir,
         "video_output_dir": args.video_output_dir,
